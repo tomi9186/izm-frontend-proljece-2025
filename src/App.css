@@ -533,6 +533,40 @@ element.style {
 	font-size: 40px;
 }
 
+.page-title {
+    background-color: #3563e9;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #fff;
+}
+
+.page-title h1 {
+    font-weight: 600;
+    font-size: 46px;
+}
+
+.blog-img img {
+    height: 240px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.blog-img {
+    background-image: url('https://placehold.co/600x400?text=Nema+Slike');
+    display: block;
+    margin-bottom: 20px;
+    background-size: contain;
+    background-position: center;
+}
+
+.blog-card h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    min-height: 80px;
+    margin-bottom: 40px;
+}
+
 @media (min-width: 768px){
 
 	.mobile-menu {
