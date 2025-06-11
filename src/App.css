@@ -515,6 +515,23 @@ element.style {
     font-weight: bold;
 }
 
+.related{
+	min-height: 400px;
+	background-color: #54A6FF;
+}
+
+.clanak-zaglavlje p{
+	text-transform: uppercase;
+    color: #e41e27;
+	margin-bottom: 6px;
+}
+
+.clanak-zaglavlje h1{
+	font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1923076923;
+	font-size: 40px;
+}
 
 @media (min-width: 768px){
 

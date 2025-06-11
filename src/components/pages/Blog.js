@@ -33,7 +33,7 @@ const Blog = () => {
                     {data.map(item => (
                         <div className="col-md-3">
                             <div>
-                                <Link to={'/blog/' + item.id}>
+                                <Link to={'/blog/' + item.slug}>
                                     <img src={item?._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes?.medium_large?.source_url} />
                                     <h1>{item.title.rendered}</h1>
                                 </Link>
