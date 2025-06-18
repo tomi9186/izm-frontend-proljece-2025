@@ -8,6 +8,13 @@ const Blog = () => {
         const [page, setPage] = useState(1);
         const [perPage, setPerPage] = useState(12);
 
+        const [authors, setAuthors] = useState([]);
+        const [selectedAuthor, setSelectedAuthor] = useState('');
+
+        const [categories, setCategories] = useState([]);
+        const [selectedCategory, setSelectedCategory] = useState('');
+
+
         const prevPage = () => {
             setPage(page - 1);
             window.scrollTo({
@@ -23,24 +30,54 @@ const Blog = () => {
                 behavior: "smooth",
             });
         }
+
+        useEffect(() => {
+
+            fetch('https://wp1.edukacija.online/backend/wp-json/wp/v2/users?per_page=20')
+                .then(res => res.json())
+                .then(data => {
+                    setAuthors(data);
+            });
+
+            fetch('https://wp1.edukacija.online/backend/wp-json/wp/v2/categories?per_page=100')
+                .then(res => res.json())
+                .then(data => {
+                    setCategories(data);
+            });
+
+        });
+
     
         useEffect(() => {
+
+            let url = 'https://wp1.edukacija.online/backend/wp-json/wp/v2/posts/?_embed';
+            if(selectedAuthor) {
+                url += '&author=' + selectedAuthor;
+            }
+
+            if(selectedCategory) {
+                url += '&categories=' + selectedCategory;
+            }
+
+            console.log(url)
+
+
+
             const fetchPage = async () => {
                 try {
-                    const response = await fetch('https://wp1.edukacija.online/backend/wp-json/wp/v2/posts/?_embed&per_page=' + perPage + '&page=' + page);
+                    const response = await fetch(url + '&per_page=' + perPage + '&page=' + page);
                     if (!response.ok) {
                         throw new Error(`Došlo je do greške: ${response.status}`);
                     }
                     const json = await response.json();
                     setData(json);
-                    console.log(json);
                 } catch (err) {
                     setError(err.message);
                 }
             };
     
             fetchPage();
-        }, [page, perPage]);
+        }, [page, perPage, selectedAuthor, selectedCategory]);
     
         if (error) return <p>Greška: {error}</p>;
         if (!data) return <p>Učitavanje...</p>;
@@ -56,7 +93,30 @@ const Blog = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-12 text-end">
-                        <select className="mb-4 form-select w-auto ms-auto" value={perPage} onChange={
+
+                        <select className="mb-4 form-select w-auto d-inline-block me-3" value={selectedCategory} onChange={
+                            (e) => {
+                                setSelectedCategory(e.target.value);
+                                setPage(1);
+                            }} >
+                            <option value="">Sve kategorije</option>
+                            {categories.map(category => (
+                                <option value={category.id}>{category.name}</option>
+                            ))}
+                        </select>
+
+                        <select className="mb-4 form-select w-auto d-inline-block me-3" value={selectedAuthor} onChange={
+                            (e) => {
+                                setSelectedAuthor(e.target.value);
+                                setPage(1);
+                            }} >
+                            <option value="">Svi autori</option>
+                            {authors.map(author => (
+                                <option value={author.id}>{author.name}</option>
+                            ))}
+                        </select>
+
+                        <select className="mb-4 form-select w-auto d-inline-block" value={perPage} onChange={
                             (e) => {
                                 setPerPage(e.target.value);
                                 setPage(1);
